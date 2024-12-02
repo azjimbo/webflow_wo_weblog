@@ -12,7 +12,7 @@ You'll need to set up your internal IP space as well as your web server IPs.  I'
 
 There is a logic issue in here - if an actor checks a web site first, then it won't appear here.  I may correct this later with a time bounding, or using Zeek's flow Id field.  But that's down the road as time permits.
 
-As time permits, I might also experiment with other open ports - but I don't have many ports open :) 
+And, as time permits, I might also experiment with other open ports - but I don't have many ports open :) 
 
 With much of my stuff, this is a work in progress.
 
