@@ -16,7 +16,7 @@ groupby All_Traffic.src_ip, All_Traffic.src_mac _time
 | search NOT [| tstats count from datamodel=Web groupby Web.src |rename Web.src AS src_ip 
     | fields src_ip]
 
-| stats earliest(_time) AS firstTime latest(_time) AS lastTime sum(bytes_in) as bytes_in sum(bytes_out) as bytes_out sum(packets_in) as packets_in sum(packets_out) as packets_out
+| stats earliest(_time) AS firstTime latest(_time) AS lastTime sum(bytes_in) as bytes_in sum(bytes_out) as bytes_out sum(packets_in) as TotPackets_in sum(packets_out) as TotPackets_out
  values(signature) as "signature" count as flows by src_ip
 | eval OverMin=round((lastTime-firstTime)/60,2)
 | convert ctime(firstTime) ctime(lastTime)
@@ -25,6 +25,8 @@ groupby All_Traffic.src_ip, All_Traffic.src_mac _time
 | eval clientip=(src_ip)
 | lookup dnslookup clientip
 
-| eval bytesPer_pkt_in=(bytes_in/packets_in), bytesPer_pkt_out=(bytes_out/packets_out)
+| eval AvgbytesPer_pkt_in=round(bytes_in/TotPackets_in,1), AvgbytesPer_pkt_out=round(bytes_out/TotPackets_out,1)
 
-| table src_ip, clienthost start_stop flows  bytesPer_pkt_in bytesPer_pkt_out ```bytes_in bytes_out packets_in packets_out``` signature   OverMin
+| sort 0 - flows
+
+| table src_ip, clienthost start_stop AvgbytesPer_pkt_in AvgbytesPer_pkt_out ```bytes_in bytes_out``` TotPackets_in TotPackets_out  signature  flows OverMin
