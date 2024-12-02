@@ -8,4 +8,6 @@ next, I'll likely add this to my block list so that appearance on this list will
 
 You'll need to set up your internal IP space as well as your web server IPs.  I've included comments where they go.
 
+There is a logic issue in here - if an actor checks a web site first, then it won't appear here.  I may correct this later with a time bounding, or using Zeek's flow Id field.  But that's down the road as time permits.
+
 Happy Hunting - 
